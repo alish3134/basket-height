@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>پیش‌بینی قد - هیئت بسکتبال تربت حیدریه</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Tahoma, 'Segoe UI', sans-serif;
+      background: linear-gradient(160deg, #1a1a1a 0%, #2d1f0f 100%);
+      color: #f5f5f5;
+      min-height: 100vh;
+      padding: 16px;
+      line-height: 1.5;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 16px 10px;
+      background: rgba(255, 140, 0, 0.15);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 140, 0, 0.3);
+    }
+    .header h1 {
+      font-size: 1.25rem;
+      color: #ff8c00;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .header p {
+      font-size: 0.85rem;
+      color: #ccc;
+    }
+    .card {
+      background: rgba(30, 30, 30, 0.9);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 140, 0, 0.25);
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #ffb347;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #ff8c00;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .row > div { flex: 1; }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #ff8c00, #ff6b00);
+      color: #111;
+    }
+    .btn-secondary {
+      background: #333;
+      color: #ff8c00;
+      border: 1px solid #ff8c00;
+      margin-top: 10px;
+    }
+    .result {
+      display: none;
+      text-align: center;
+      padding: 20px 10px;
+    }
+    .result h2 {
+      font-size: 2.2rem;
+      color: #ff8c00;
+      margin: 10px 0;
+    }
+    .result .range {
+      font-size: 0.95rem;
+      color: #aaa;
+      margin-top: 8px;
+    }
+    .note {
+      font-size: 0.8rem;
+      color: #888;
+      text-align: center;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    .basket {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="basket">🏀</div>
+    <h1>هیئت بسکتبال شهرستان تربت حیدریه</h1>
+    <p>پیش‌بینی قد بزرگسالی (روش خامیس-روچه)</p>
+  </div>
+
+  <div class="card" id="formCard">
+    <label>جنسیت کودک</label>
+    <select id="gender">
+      <option value="male">پسر</option>
+      <option value="female">دختر</option>
+    </select>
+
+    <label>سن دقیق کودک</label>
+    <div class="row">
+      <div>
+        <input type="number" id="ageYear" placeholder="سال" min="9" max="16">
+      </div>
+      <div>
+        <input type="number" id="ageMonth" placeholder="ماه" min="0" max="11">
+      </div>
+      <div>
+        <input type="number" id="ageDay" placeholder="روز" min="0" max="30">
+      </div>
+    </div>
+
+    <label>قد فعلی (سانتی‌متر)</label>
+    <input type="number" id="height" placeholder="مثلاً ۱۴۸" step="0.1">
+
+    <label>وزن فعلی (کیلوگرم)</label>
+    <input type="number" id="weight" placeholder="مثلاً ۴۲" step="0.1">
+
+    <label>قد پدر (سانتی‌متر)</label>
+    <input type="number" id="father" placeholder="مثلاً ۱۷۸" step="0.1">
+
+    <label>قد مادر (سانتی‌متر)</label>
+    <input type="number" id="mother" placeholder="مثلاً ۱۶۳" step="0.1">
+
+    <button class="btn btn-primary" onclick="calculate()">محاسبه قد بزرگسالی</button>
+  </div>
+
+  <div class="card result" id="resultCard">
+    <p>قد پیش‌بینی‌شده در بزرگسالی:</p>
+    <h2 id="predHeight">—</h2>
+    <p class="range" id="rangeText"></p>
+    <button class="btn btn-secondary" onclick="sendToBot()">ارسال نتیجه به ربات / کانال</button>
+    <button class="btn btn-secondary" onclick="resetForm()" style="margin-top:8px;">محاسبه جدید</button>
+  </div>
+
+  <p class="note">
+    این پیش‌بینی بر اساس روش علمی خامیس-روچه است و جنبه اطلاع‌رسانی دارد.<br>
+    دقت تقریبی حدود ±۴ تا ۵٫۵ سانتی‌متر است و جایگزین نظر پزشک نیست.
+  </p>
+
+  <script>
+    // ضرایب خامیس-روچه (پسران - اصلاح‌شده ۱۹۹۵)
+    const boysCoef = {
+      9.0:  [-11.1571, 1.05166, -0.045254, 0.42776],
+      9.5:  [-11.1405, 1.02174, -0.043311, 0.43593],
+      10.0: [-11.038,  0.97135, -0.039981, 0.45932],
+      10.5: [-10.8286, 0.89589, -0.034814, 0.50101],
+      11.0: [-10.4917, 0.81239, -0.02905,  0.54781],
+      11.5: [-10.0065, 0.74134, -0.024167, 0.58409],
+      12.0: [-9.3522,  0.68325, -0.020076, 0.60927],
+      12.5: [-8.6055,  0.63869, -0.016681, 0.62279],
+      13.0: [-7.8632,  0.60818, -0.013895, 0.62407],
+      13.5: [-7.1348,  0.59228, -0.011624, 0.61253],
+      14.0: [-6.4299,  0.59151, -0.009776, 0.58762],
+      14.5: [-5.7578,  0.60643, -0.008261, 0.54875],
+      15.0: [-5.1282,  0.63757, -0.006988, 0.49536],
+      15.5: [-4.5092,  0.68548, -0.005863, 0.42687],
+      16.0: [-3.9292,  0.75069, -0.004795, 0.34271],
+      16.5: [-3.4873,  0.83375, -0.003695, 0.24231]
+    };
+
+    // ضرایب دختران (تقریبی بر اساس داده‌های موجود برای سنین ۹-۱۶)
+    const girlsCoef = {
+      9.0:  [-1.95, 0.96, -0.09, 0.32],
+      9.5:  [-1.75, 0.93, -0.085, 0.33],
+      10.0: [-1.55, 0.90, -0.08, 0.34],
+      10.5: [-1.40, 0.87, -0.075, 0.35],
+      11.0: [-1.25, 0.84, -0.07, 0.36],
+      11.5: [-1.15, 0.81, -0.065, 0.37],
+      12.0: [-1.05, 0.78, -0.06, 0.38],
+      12.5: [-0.95, 0.76, -0.055, 0.385],
+      13.0: [-0.85, 0.75, -0.05, 0.39],
+      13.5: [-0.75, 0.74, -0.045, 0.385],
+      14.0: [-0.65, 0.74, -0.04, 0.37],
+      14.5: [-0.55, 0.75, -0.035, 0.35],
+      15.0: [-0.45, 0.77, -0.03, 0.32],
+      15.5: [-0.40, 0.80, -0.025, 0.28],
+      16.0: [-0.35, 0.84, -0.02, 0.22],
+      16.5: [-0.30, 0.89, -0.015, 0.15]
+    };
+
+    function getCoef(sex, age) {
+      const table = sex === 'male' ? boysCoef : girlsCoef;
+      const ages = Object.keys(table).map(Number).sort((a,b)=>a-b);
+      if (age <= ages[0]) return table[ages[0]];
+      if (age >= ages[ages.length-1]) return table[ages[ages.length-1]];
+
+      let lower = ages[0], upper = ages[1];
+      for (let i = 0; i < ages.length-1; i++) {
+        if (age >= ages[i] && age <= ages[i+1]) {
+          lower = ages[i];
+          upper = ages[i+1];
+          break;
+        }
+      }
+      const t = (age - lower) / (upper - lower);
+      const c1 = table[lower], c2 = table[upper];
+      return [
+        c1[0] + t*(c2[0]-c1[0]),
+        c1[1] + t*(c2[1]-c1[1]),
+        c1[2] + t*(c2[2]-c1[2]),
+        c1[3] + t*(c2[3]-c1[3])
+      ];
+    }
+
+    function calculate() {
+      const gender = document.getElementById('gender').value;
+      const y = parseFloat(document.getElementById('ageYear').value) || 0;
+      const m = parseFloat(document.getElementById('ageMonth').value) || 0;
+      const d = parseFloat(document.getElementById('ageDay').value) || 0;
+      const heightCm = parseFloat(document.getElementById('height').value);
+      const weightKg = parseFloat(document.getElementById('weight').value);
+      const fatherCm = parseFloat(document.getElementById('father').value);
+      const motherCm = parseFloat(document.getElementById('mother').value);
+
+      if (!y || y < 9 || y > 16 || !heightCm || !weightKg || !fatherCm || !motherCm) {
+        alert('لطفاً همه فیلدها را درست پر کنید (سن بین ۹ تا ۱۶ سال)');
+        return;
+      }
+
+      const age = y + m/12 + d/365.25;
+      const heightIn = heightCm / 2.54;
+      const weightLb = weightKg * 2.20462;
+      const midParentIn = ((fatherCm + motherCm) / 2) / 2.54;
+
+      const coef = getCoef(gender, age);
+      const pahIn = coef[0] + coef[1]*heightIn + coef[2]*weightLb + coef[3]*midParentIn;
+      const pahCm = pahIn * 2.54;
+
+      const error = gender === 'male' ? 5.3 : 4.3;
+      const low = (pahCm - error).toFixed(1);
+      const high = (pahCm + error).toFixed(1);
+
+      document.getElementById('predHeight').textContent = pahCm.toFixed(1) + ' سانتی‌متر';
+      document.getElementById('rangeText').textContent = `بازه تقریبی: ${low} تا ${high} سانتی‌متر`;
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('resultCard').style.display = 'block';
+
+      // ذخیره موقت برای ارسال
+      window.lastResult = {
+        gender: gender === 'male' ? 'پسر' : 'دختر',
+        age: age.toFixed(2),
+        height: heightCm,
+        weight: weightKg,
+        father: fatherCm,
+        mother: motherCm,
+        predicted: pahCm.toFixed(1),
+        range: `${low} - ${high}`
+      };
+    }
+
+    function sendToBot() {
+      if (!window.lastResult) return;
+      const data = JSON.stringify(window.lastResult);
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.sendData(data);
+        Telegram.WebApp.close();
+      } else {
+        alert('این قابلیت فقط داخل تلگرام کار می‌کند.\nنتیجه: ' + data);
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('formCard').style.display = 'block';
+      document.getElementById('resultCard').style.display = 'none';
+    }
+
+    // آماده‌سازی تلگرام
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+  </script>
+</body>
+</html>
