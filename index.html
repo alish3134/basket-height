@@ -345,6 +345,73 @@
   const CM_TO_IN = 0.393701;
   const KG_TO_LB = 2.20462;
 
+  const KR_COEFFICIENTS_BOYS = {
+    "4.0":  { b0: -10.2567, b1: 1.23812, b2: -0.087235, b3: 0.50286 },
+    "4.5":  { b0: -10.7190, b1: 1.15964, b2: -0.074454, b3: 0.52887 },
+    "5.0":  { b0: -11.0213, b1: 1.10674, b2: -0.064778, b3: 0.53919 },
+    "5.5":  { b0: -11.1556, b1: 1.07480, b2: -0.057760, b3: 0.53691 },
+    "6.0":  { b0: -11.1138, b1: 1.05923, b2: -0.052947, b3: 0.52513 },
+    "6.5":  { b0: -11.0221, b1: 1.05542, b2: -0.049892, b3: 0.50692 },
+    "7.0":  { b0: -10.9984, b1: 1.05877, b2: -0.048144, b3: 0.48538 },
+    "7.5":  { b0: -11.0214, b1: 1.06467, b2: -0.047256, b3: 0.46361 },
+    "8.0":  { b0: -11.0696, b1: 1.06853, b2: -0.046778, b3: 0.44469 },
+    "8.5":  { b0: -11.1220, b1: 1.06572, b2: -0.046261, b3: 0.43171 },
+    "9.0":  { b0: -11.1571, b1: 1.05166, b2: -0.045254, b3: 0.42776 },
+    "9.5":  { b0: -11.1405, b1: 1.02174, b2: -0.043311, b3: 0.43593 },
+    "10.0": { b0: -11.0380, b1: 0.97135, b2: -0.039981, b3: 0.45932 },
+    "10.5": { b0: -10.8286, b1: 0.89589, b2: -0.034814, b3: 0.50101 },
+    "11.0": { b0: -10.4917, b1: 0.81239, b2: -0.029050, b3: 0.54781 },
+    "11.5": { b0: -10.0065, b1: 0.74134, b2: -0.024167, b3: 0.58409 },
+    "12.0": { b0: -9.3522,  b1: 0.68325, b2: -0.020076, b3: 0.60927 },
+    "12.5": { b0: -8.6055,  b1: 0.63869, b2: -0.016681, b3: 0.62279 },
+    "13.0": { b0: -7.8632,  b1: 0.60818, b2: -0.013895, b3: 0.62407 },
+    "13.5": { b0: -7.1348,  b1: 0.59228, b2: -0.011624, b3: 0.61253 },
+    "14.0": { b0: -6.4299,  b1: 0.59151, b2: -0.009776, b3: 0.58762 },
+    "14.5": { b0: -5.7578,  b1: 0.60643, b2: -0.008261, b3: 0.54875 },
+    "15.0": { b0: -5.1282,  b1: 0.63757, b2: -0.006988, b3: 0.49536 },
+    "15.5": { b0: -4.5092,  b1: 0.68548, b2: -0.005863, b3: 0.42687 },
+    "16.0": { b0: -3.9292,  b1: 0.75069, b2: -0.004795, b3: 0.34271 },
+    "16.5": { b0: -3.4873,  b1: 0.83375, b2: -0.003695, b3: 0.24231 },
+    "17.0": { b0: -3.2830,  b1: 0.93520, b2: -0.002470, b3: 0.12510 },
+    "17.5": { b0: -3.4156,  b1: 1.05558, b2: -0.001027, b3: -0.00950 },
+  };
+
+  const KR_COEFFICIENTS_GIRLS = {
+    "4.0":  { b0: -8.13250, b1: 1.24768, b2: -0.019435, b3: 0.44774 },
+    "4.5":  { b0: -6.47656, b1: 1.22177, b2: -0.018519, b3: 0.41381 },
+    "5.0":  { b0: -5.25882, b1: 1.07932, b2: -0.017530, b3: 0.36467 },
+    "5.5":  { b0: -4.13791, b1: 1.17880, b2: -0.016484, b3: 0.36029 },
+    "6.0":  { b0: -3.51039, b1: 1.15866, b2: -0.015400, b3: 0.34105 },
+    "6.5":  { b0: -3.14322, b1: 1.13737, b2: -0.014294, b3: 0.32672 },
+    "7.0":  { b0: -2.87645, b1: 1.11342, b2: -0.013184, b3: 0.31748 },
+    "7.5":  { b0: -2.62691, b1: 1.08525, b2: -0.012086, b3: 0.31340 },
+    "8.0":  { b0: -2.45559, b1: 1.05135, b2: -0.011019, b3: 0.31457 },
+    "8.5":  { b0: -2.20728, b1: 1.01013, b2: -0.009999, b3: 0.32105 },
+    "9.0":  { b0: -1.87098, b1: 0.96020, b2: -0.009044, b3: 0.33291 },
+    "9.5":  { b0: -1.06330, b1: 0.89999, b2: -0.008171, b3: 0.35025 },
+    "10.0": { b0: -0.33468, b1: 0.82771, b2: -0.007397, b3: 0.37312 },
+    "10.5": { b0: -1.59746, b1: 0.74213, b2: -0.006739, b3: 0.40161 },
+    "11.0": { b0: -3.50426, b1: 0.67173, b2: -0.006156, b3: 0.42042 },
+    "11.5": { b0: -4.57747, b1: 0.64150, b2: -0.005518, b3: 0.41686 },
+    "12.0": { b0: -4.84365, b1: 0.64452, b2: -0.004594, b3: 0.39490 },
+    "12.5": { b0: -4.27869, b1: 0.67386, b2: -0.004272, b3: 0.35850 },
+    "13.0": { b0: -3.21417, b1: 0.72260, b2: -0.003661, b3: 0.31163 },
+    "13.5": { b0: -1.83456, b1: 0.78383, b2: -0.005067, b3: 0.25826 },
+    "14.0": { b0: -0.24255, b1: 0.85062, b2: -0.002050, b3: 0.20235 },
+    "14.5": { b0: -1.13224, b1: 0.91605, b2: -0.001967, b3: 0.14787 },
+    "15.0": { b0: -5.7928,  b1: 0.60643, b2: 0.0008361, b3: 0.54575 },
+    "15.5": { b0: -5.1282,  b1: 0.63757, b2: 0.0006988, b3: 0.49536 },
+    "16.0": { b0: -4.5092,  b1: 0.68548, b2: 0.0005863, b3: 0.42687 },
+    "16.5": { b0: -3.4873,  b1: 0.38395, b2: 0.0003695, b3: 0.24231 },
+    "17.0": { b0: -3.2830,  b1: 0.93350, b2: 0.0002470, b3: 0.12510 },
+    "17.5": { b0: -3.4116,  b1: 1.05558, b2: 0.0001027, b3: 0.00950 },
+  };
+
+  function getCoefficientsForAge(gender, age) {
+    const table = gender === 'male' ? KR_COEFFICIENTS_BOYS : KR_COEFFICIENTS_GIRLS;
+    const rounded = Math.round(age * 2) / 2;
+    const key = rounded.toFixed(1);
+    if (table[key]) return table[key];
     const available = Object.keys(table).map(Number).sort((a, b) => a - b);
     const closest = available.reduce((prev, curr) =>
       Math.abs(curr - rounded) < Math.abs(prev - rounded) ? curr : prev
@@ -380,119 +447,107 @@
     return { predicted: predictedCm, pah };
   }
 
-  // ========== Calculate ==========
+    // ========== Calculate ==========
   calcBtn.addEventListener('click', () => {
     const name = document.getElementById('fullName').value.trim();
     const pYear = parseInt(document.getElementById('birthYear').value);
     const pMonth = parseInt(document.getElementById('birthMonth').value);
     const pDay = parseInt(document.getElementById('birthDay').value);
-    const school = document.getElementByI
+    const school = document.getElementById('school').value.trim();
+    const guardianPhone = document.getElementById('guardianPhone').value.trim();
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const fatherH = parseFloat(document.getElementById('fatherHeight').value);
+    const motherH = parseFloat(document.getElementById('motherHeight').value);
 
+    if (!name || !pYear || !pMonth || !pDay || !height || !weight || !fatherH || !motherH) {
+      showAlert('resultContainer', 'لطفاً همه فیلدهای الزامی را پر کنید.', 'warning');
+      return;
+    }
 
-On Sun, 22 Nov 2026, 00:04 , <ali.sheibani@gmail.com> wrote:
-// ========== Khamis-Roche (Corrected & Unit-Aware) ==========
-const CM_TO_IN = 0.393701;
-const KG_TO_LB = 2.20462;
+    const age = calculateDecimalAge(pYear, pMonth, pDay);
+    const result = predictAdultHeight({
+      gender: selectedGender, age, height, weight,
+      fatherHeight: fatherH, motherHeight: motherH,
+    });
+    if (result.error) { showAlert('resultContainer', result.error, 'warning'); return; }
 
-// جدول کامل ضرایب پسران (4.0 - 17.5 سال)
-const KR_COEFFICIENTS_BOYS = {
-  "4.0":  { b0: -10.2567, b1: 1.23812, b2: -0.087235, b3: 0.50286 },
-  "4.5":  { b0: -10.7190, b1: 1.15964, b2: -0.074454, b3: 0.52887 },
-  "5.0":  { b0: -11.0213, b1: 1.10674, b2: -0.064778, b3: 0.53919 },
-  "5.5":  { b0: -11.1556, b1: 1.07480, b2: -0.057760, b3: 0.53691 },
-  "6.0":  { b0: -11.1138, b1: 1.05923, b2: -0.052947, b3: 0.52513 },
-  "6.5":  { b0: -11.0221, b1: 1.05542, b2: -0.049892, b3: 0.50692 },
-  "7.0":  { b0: -10.9984, b1: 1.05877, b2: -0.048144, b3: 0.48538 },
-  "7.5":  { b0: -11.0214, b1: 1.06467, b2: -0.047256, b3: 0.46361 },
-  "8.0":  { b0: -11.0696, b1: 1.06853, b2: -0.046778, b3: 0.44469 },
-  "8.5":  { b0: -11.1220, b1: 1.06572, b2: -0.046261, b3: 0.43171 },
-  "9.0":  { b0: -11.1571, b1: 1.05166, b2: -0.045254, b3: 0.42776 },
-  "9.5":  { b0: -11.1405, b1: 1.02174, b2: -0.043311, b3: 0.43593 },
-  "10.0": { b0: -11.0380, b1: 0.97135, b2: -0.039981, b3: 0.45932 },
-  "10.5": { b0: -10.8286, b1: 0.89589, b2: -0.034814, b3: 0.50101 },
-  "11.0": { b0: -10.4917, b1: 0.81239, b2: -0.029050, b3: 0.54781 },
-  "11.5": { b0: -10.0065, b1: 0.74134, b2: -0.024167, b3: 0.58409 },
-  "12.0": { b0: -9.3522,  b1: 0.68325, b2: -0.020076, b3: 0.60927 },
-  "12.5": { b0: -8.6055,  b1: 0.63869, b2: -0.016681, b3: 0.62279 },
-  "13.0": { b0: -7.8632,  b1: 0.60818, b2: -0.013895, b3: 0.62407 },
-  "13.5": { b0: -7.1348,  b1: 0.59228, b2: -0.011624, b3: 0.61253 },
-  "14.0": { b0: -6.4299,  b1: 0.59151, b2: -0.009776, b3: 0.58762 },
-  "14.5": { b0: -5.7578,  b1: 0.60643, b2: -0.008261, b3: 0.54875 },
-  "15.0": { b0: -5.1282,  b1: 0.63757, b2: -0.006988, b3: 0.49536 },
-  "15.5": { b0: -4.5092,  b1: 0.68548, b2: -0.005863, b3: 0.42687 },
-  "16.0": { b0: -3.9292,  b1: 0.75069, b2: -0.004795, b3: 0.34271 },
-  "16.5": { b0: -3.4873,  b1: 0.83375, b2: -0.003695, b3: 0.24231 },
-  "17.0": { b0: -3.2830,  b1: 0.93520, b2: -0.002470, b3: 0.12510 },
-  "17.5": { b0: -3.4156,  b1: 1.05558, b2: -0.001027, b3: -0.00950 },
-};
+    const data = {
+      fullName: name, gender: selectedGender,
+      birthYear: pYear, birthMonth: pMonth, birthDay: pDay, age,
+      school, guardianPhone, height, weight,
+      fatherHeight: fatherH, motherHeight: motherH,
+      predictedHeight: result.predicted, pah: result.pah,
+      savedAt: new Date().toISOString(),
+    };
+    localStorage.setItem('studentData', JSON.stringify(data));
 
-// جدول کامل ضرایب دختران (4.0 - 17.5 سال)
-const KR_COEFFICIENTS_GIRLS = {
-  "4.0":  { b0: -8.13250, b1: 1.24768, b2: -0.019435, b3: 0.44774 },
-  "4.5":  { b0: -6.47656, b1: 1.22177, b2: -0.018519, b3: 0.41381 },
-  "5.0":  { b0: -5.25882, b1: 1.07932, b2: -0.017530, b3: 0.36467 },
-  "5.5":  { b0: -4.13791, b1: 1.17880, b2: -0.016484, b3: 0.36029 },
-  "6.0":  { b0: -3.51039, b1: 1.15866, b2: -0.015400, b3: 0.34105 },
-  "6.5":  { b0: -3.14322, b1: 1.13737, b2: -0.014294, b3: 0.32672 },
-  "7.0":  { b0: -2.87645, b1: 1.11342, b2: -0.013184, b3: 0.31748 },
-  "7.5":  { b0: -2.62691, b1: 1.08525, b2: -0.012086, b3: 0.31340 },
-  "8.0":  { b0: -2.45559, b1: 1.05135, b2: -0.011019, b3: 0.31457 },
-  "8.5":  { b0: -2.20728, b1: 1.01013, b2: -0.009999, b3: 0.32105 },
-  "9.0":  { b0: -1.87098, b1: 0.96020, b2: -0.009044, b3: 0.33291 },
-  "9.5":  { b0: -1.06330, b1: 0.89999, b2: -0.008171, b3: 0.35025 },
-  "10.0": { b0: -0.33468, b1: 0.82771, b2: -0.007397, b3: 0.37312 },
-  "10.5": { b0: -1.59746, b1: 0.74213, b2: -0.006739, b3: 0.40161 },
-  "11.0": { b0: -3.50426, b1: 0.67173, b2: -0.006156, b3: 0.42042 },
-  "11.5": { b0: -4.57747, b1: 0.64150, b2: -0.005518, b3: 0.41686 },
-  "12.0": { b0: -4.84365, b1: 0.64452, b2: -0.004594, b3: 0.39490 },
-  "12.5": { b0: -4.27869, b1: 0.67386, b2: -0.004272, b3: 0.35850 },
-  "13.0": { b0: -3.21417, b1: 0.72260, b2: -0.003661, b3: 0.31163 },
-  "13.5": { b0: -1.83456, b1: 0.78383, b2: -0.005067, b3: 0.25826 },
-  "14.0": { b0: -0.24255, b1: 0.85062, b2: -0.002050, b3: 0.20235 },
-  "14.5": { b0: -1.13224, b1: 0.91605, b2: -0.001967, b3: 0.14787 },
-  "15.0": { b0: -5.7928,  b1: 0.60643, b2: 0.0008361, b3: 0.54575 },
-  "15.5": { b0: -5.1282,  b1: 0.63757, b2: 0.0006988, b3: 0.49536 },
-  "16.0": { b0: -4.5092,  b1: 0.68548, b2: 0.0005863, b3: 0.42687 },
-  "16.5": { b0: -3.4873,  b1: 0.38395, b2: 0.0003695, b3: 0.24231 },
-  "17.0": { b0: -3.2830,  b1: 0.93350, b2: 0.0002470, b3: 0.12510 },
-  "17.5": { b0: -3.4116,  b1: 1.05558, b2: 0.0001027, b3: 0.00950 },
-};
+    document.getElementById('resultContainer').innerHTML = `
+      <div class="result-card">
+        <p class="label">قد بزرگسالی پیش‌بینی‌شده</p>
+        <p class="value">${result.predicted} <span>سانتی‌متر</span></p>
+        <p class="pah">شما <strong>${result.pah}٪</strong> از قد نهایی‌تان را رسیده‌اید.</p>
+        <p class="disclaimer">این یک تخمین علمی است، نه قطعیت.<br>برای ارزیابی دقیق‌تر در آزمون حضوری شرکت کنید.</p>
+      </div>`;
+    updateRegistrationForm(data);
+    tg?.HapticFeedback?.notificationOccurred('success');
+  });
 
-function getCoefficientsForAge(gender, age) {
-  const table = gender === 'male' ? KR_COEFFICIENTS_BOYS : KR_COEFFICIENTS_GIRLS;
-  const rounded = Math.round(age * 2) / 2;
-  const key = rounded.toFixed(1);
-  if (table[key]) return table[key];
-  // اگر سن خارج از بازه بود، نزدیک‌ترین بازه موجود برگردانده می‌شود
-  const available = Object.keys(table).map(Number).sort((a,b) => a-b);
-  const closest = available.reduce((prev, curr) =>
-    Math.abs(curr - rounded) < Math.abs(prev - rounded) ? curr : prev
-  );
-  return table[closest.toFixed(1)];
-}
+  // ========== Registration ==========
+  function updateRegistrationForm(data) {
+    document.getElementById('regName').value = data.fullName;
+    document.getElementById('regSchool').value = data.school;
+  }
+  document.getElementById('registerBtn').addEventListener('click', () => {
+    const saved = localStorage.getItem('studentData');
+    if (!saved) { showAlert('registerResult', 'ابتدا در تب «پیش‌بینی قد» فرم را پر و محاسبه کنید.', 'warning'); return; }
+    const data = JSON.parse(saved);
+    const day = document.getElementById('regDay').value;
+    const time = document.getElementById('regTime').value;
+    if (!day || !time) { showAlert('registerResult', 'لطفاً روز و بازه ساعتی را انتخاب کنید.', 'warning'); return; }
 
-function predictAdultHeightCorrected({ gender, age, heightCm, weightKg, fatherHeightCm, motherHeightCm }) {
-  if (age < 4 || age > 17.5) {
-    return { error: 'این روش برای سنین ۴ تا ۱۷.۵ سال طراحی شده است.' };
+    const reg = {
+      ...data,
+      studentPhone: document.getElementById('regStudentPhone').value.trim(),
+      preferredDay: day, preferredTime: time,
+      registeredAt: new Date().toISOString(),
+    };
+    localStorage.setItem('registration', JSON.stringify(reg));
+    showAlert('registerResult', '✅ ثبت‌نام شما انجام شد!<br>همکاران هیئت برای هماهنگی آزمون با شما و ولی‌تان تماس خواهند گرفت.', 'success');
+    tg?.HapticFeedback?.notificationOccurred('success');
+  });
+
+  // ========== Helpers ==========
+  function showAlert(id, msg, type = 'success') {
+    const c = document.getElementById(id);
+    c.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+    c.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  const heightIn = heightCm * CM_TO_IN;
-  const weightLb = weightKg * KG_TO_LB;
-  const fatherIn = fatherHeightCm * CM_TO_IN;
-  const motherIn = motherHeightCm * CM_TO_IN;
-
-  let midParentIn;
-  if (gender === 'male') {
-    midParentIn = (motherIn + fatherIn + 13) / 2;
-  } else {
-    midParentIn = (motherIn + fatherIn - 13) / 2;
+  // ========== Restore ==========
+  const existing = localStorage.getItem('studentData');
+  if (existing) {
+    try {
+      const d = JSON.parse(existing);
+      document.getElementById('fullName').value = d.fullName || '';
+      document.getElementById('birthYear').value = d.birthYear || '';
+      document.getElementById('birthMonth').value = d.birthMonth || '';
+      document.getElementById('birthDay').value = d.birthDay || '';
+      document.getElementById('school').value = d.school || '';
+      document.getElementById('guardianPhone').value = d.guardianPhone || '';
+      document.getElementById('height').value = d.height || '';
+      document.getElementById('weight').value = d.weight || '';
+      document.getElementById('fatherHeight').value = d.fatherHeight || '';
+      document.getElementById('motherHeight').value = d.motherHeight || '';
+      if (d.gender) {
+        selectedGender = d.gender;
+        document.querySelector(`#genderGroup button[data-value="${d.gender}"]`)?.classList.add('selected');
+      }
+      consent.checked = true;
+      validateCalc();
+      updateRegistrationForm(d);
+    } catch (e) { console.warn(e); }
   }
-
-  const { b0, b1, b2, b3 } = getCoefficientsForAge(gender, age);
-  const predictedIn = b0 + b1 * heightIn + b2 * weightLb + b3 * midParentIn;
-
-  const predictedCm = Math.round((predictedIn / CM_TO_IN) * 10) / 10;
-  const pah = Math.round((heightCm / predictedCm) * 1000) / 10;
-
-  return { predicted: predictedCm, pah };
-}
+</script>
+</body>
+</html>
