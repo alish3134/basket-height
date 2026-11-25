@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>هیئت بسکتبال تربت حیدریه</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Tahoma, sans-serif;
+      background: #0f0f0f;
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px 16px;
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-top: 20px;
+    }
+    .header .ball {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 18px;
+      color: #ff8c00;
+      line-height: 1.5;
+    }
+    .header p {
+      font-size: 13px;
+      color: #999;
+      margin-top: 6px;
+    }
+    .menu-btn {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      margin-bottom: 14px;
+      background: #1a1a1a;
+      border: 1px solid #ff6b00;
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+    }
+    .menu-btn:active {
+      background: #ff6b00;
+      color: #000;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: #ccc;
+      font-size: 14px;
+    }
+    .content-box {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 10px;
+      line-height: 1.8;
+      color: #ddd;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<!-- صفحه اصلی -->
+  <div id="home" class="page active">
+    <div class="header">
+      <div class="ball">🏀</div>
+      <h1>هیئت بسکتبال<br>شهرستان تربت حیدریه</h1>
+      <p>طرح استعدادیابی و پیش‌بینی قد</p>
+    </div>
+
+    <button class="menu-btn" onclick="showPage('predict')">پیش‌بینی قد بزرگسالی</button>
+    <button class="menu-btn" onclick="showPage('about')">درباره طرح</button>
+    <button class="menu-btn" onclick="showPage('register')">ثبت‌نام در آزمون حضوری</button>
+  </div>
+
+  <!-- صفحه پیش‌بینی قد -->
+  <div id="predict" class="page">
+    <button class="back-btn" onclick="showPage('home')">← بازگشت</button>
+    <div class="content-box">
+      <p>این بخش به زودی کامل می‌شود.</p>
+      <p>اینجا فرم محاسبه قد قرار خواهد گرفت.</p>
+    </div>
+  </div>
+
+  <!-- صفحه درباره طرح -->
+  <div id="about" class="page">
+    <button class="back-btn" onclick="showPage('home')">← بازگشت</button>
+    <div class="content-box">
+      <p>این بخش به زودی کامل می‌شود.</p>
+      <p>اینجا توضیحات مربوط به طرح نوشته خواهد شد.</p>
+    </div>
+  </div>
+
+  <!-- صفحه ثبت‌نام -->
+  <div id="register" class="page">
+    <button class="back-btn" onclick="showPage('home')">← بازگشت</button>
+    <div class="content-box">
+      <p>این بخش به زودی کامل می‌شود.</p>
+      <p>اینجا امکان انتخاب زمان و مکان آزمون حضوری قرار می‌گیرد.</p>
+    </div>
+  </div>
+<script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(function(page) {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
