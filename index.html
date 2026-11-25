@@ -345,3 +345,78 @@
           break;
         }
       }
+     var t = (age - lo) / (hi - lo);
+      var c1 = table[lo];
+      var c2 = table[hi];
+      return [
+        c1[0] + t * (c2[0] - c1[0]),
+        c1[1] + t * (c2[1] - c1[1]),
+        c1[2] + t * (c2[2] - c1[2]),
+        c1[3] + t * (c2[3] - c1[3])
+      ];
+  }
+  // محاسبه قد بزرگسالی
+    function predictAdultHeight(gender, age, height, weight, fatherHeight, motherHeight) {
+      if (age < 7 || age > 16.5) {
+        return { error: 'سن باید بین ۷ تا ۱۶٫۵ سال باشد.' };
+      }
+      var hIn = height / 2.54;
+      var wLb = weight * 2.20462;
+      var midIn = ((fatherHeight + motherHeight) / 2) / 2.54;
+      var coef = getCoef(gender, age);
+      var pahIn = coef[0] + coef[1] * hIn + coef[2] * wLb + coef[3] * midIn;
+      var predicted = pahIn * 2.54;
+      var error = gender === 'male' ? 5.3 : 4.3;
+      var pahPercent = Math.min(99, Math.round((height / predicted) * 100));
+      return {
+        predicted: predicted.toFixed(1),
+        error: error,
+        pahPercent: pahPercent
+      };
+    }
+
+    // دکمه محاسبه
+    document.getElementById('calcBtn').addEventListener('click', function() {
+      var name = document.getElementById('fullName').value.trim();
+      var y = parseInt(document.getElementById('birthYear').value);
+      var m = parseInt(document.getElementById('birthMonth').value);
+      var d = parseInt(document.getElementById('birthDay').value);
+      var height = parseFloat(document.getElementById('height').value);
+      var weight = parseFloat(document.getElementById('weight').value);
+      var fatherH = parseFloat(document.getElementById('fatherHeight').value);
+      var motherH = parseFloat(document.getElementById('motherHeight').value);
+
+      var alertBox = document.getElementById('alertBox');
+      alertBox.innerHTML = '';
+
+      if (!selectedGender) {
+        alertBox.innerHTML = '<div style="padding:12px; background:rgba(255,170,0,0.15); color:#ffb400; border-radius:10px; font-size:13px;">لطفاً جنسیت را انتخاب کنید.</div>';
+        return;
+      }
+      if (!name || !y || !m || !d || !height || !weight || !fatherH || !motherH) {
+        alertBox.innerHTML = '<div style="padding:12px; background:rgba(255,170,0,0.15); color:#ffb400; border-radius:10px; font-size:13px;">لطفاً همه فیلدهای ضروری را پر کنید.</div>';
+        return;
+      }
+
+      var age = calculateDecimalAge(y, m, d);
+      var result = predictAdultHeight(selectedGender, age, height, weight, fatherH, motherH);
+
+      if (result.error) {
+        alertBox.innerHTML = '<div style="padding:12px; background:rgba(255,170,0,0.15); color:#ffb400; border-radius:10px; font-size:13px;">' + result.error + '</div>';
+        return;
+      }
+
+      var low = (parseFloat(result.predicted) - result.error).toFixed(1);
+      var high = (parseFloat(result.predicted) + result.error).toFixed(1);
+
+      document.getElementById('predValue').textContent = result.predicted;
+      document.getElementById('rangeText').textContent = 'بازه اطمینان تقریبی: ' + low + ' تا ' + high + ' سانتی‌متر (±' + result.error + ')';
+      document.getElementById('pahText').textContent = 'حدود ' + result.pahPercent + '٪ از قد نهایی طی شده است.';
+      document.getElementById('motivateText').textContent = 'با تمرین منظم، تغذیه مناسب و خواب کافی می‌تونی به این قد نزدیک بشی 🏀';
+
+      document.getElementById('resultBox').style.display = 'block';
+      document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
